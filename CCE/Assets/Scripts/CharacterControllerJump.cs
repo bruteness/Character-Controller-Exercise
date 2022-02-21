@@ -8,13 +8,15 @@ public class CharacterControllerJump : MonoBehaviour
     public float Gravity = -9.81f;
 
     private CharacterController _controller; //Add character controller component to player
+    private Animator _animator;
     private Vector3 _velocity;
     private bool _groundedPlayer;
     private float _jumpHeight = 1.0f;
 
     void Start()
     {
-        _controller = GetComponent<CharacterController>(); //reference to the cahracter controller component
+        _controller = GetComponent<CharacterController>(); //reference to the character controller component
+        _animator = GetComponent<Animator>(); //reference to the character animator component
     }
 
     void Update()
@@ -28,6 +30,7 @@ public class CharacterControllerJump : MonoBehaviour
 
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")); //predefined axes in Unity linked to WASD controllers
         _controller.Move(move * Time.deltaTime * Speed); //moves character in the given direction from our move vector3
+        _animator.SetFloat("Speed", Mathf.Abs(move.x) + Mathf.Abs(move.z));
 
 
         if (move != Vector3.zero)
@@ -41,6 +44,7 @@ public class CharacterControllerJump : MonoBehaviour
         }
 
         _velocity.y += Gravity * Time.deltaTime; //setting velocity in the y direction to the acceleration of gravity in relation to our fps (Time.deltaTime)
+        _animator.SetFloat("YVelocity", _velocity.y);
         _controller.Move(_velocity * Time.deltaTime); //Movement based on velocity
     }
 }
