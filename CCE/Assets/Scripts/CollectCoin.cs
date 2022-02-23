@@ -17,6 +17,7 @@ public class CollectCoin : MonoBehaviour
         if(other.tag == "Player")
         {
             AudioSource.PlayClipAtPoint(coinPickup, transform.position);
+            FindObjectOfType<GameManager>().GetCoin();
             Destroy(gameObject);
         }
     }

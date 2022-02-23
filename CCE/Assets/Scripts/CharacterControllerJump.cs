@@ -14,6 +14,7 @@ public class CharacterControllerJump : MonoBehaviour
     private bool _isWalking;
     private bool _isRunning;
     private float _jumpHeight = 1.0f;
+    private float _runSpeed = 1.15f;
 
     void Start()
     {
@@ -25,14 +26,14 @@ public class CharacterControllerJump : MonoBehaviour
     {
         _groundedPlayer = _controller.isGrounded; //waws the character touching the ground during the last frame? Accessing character controller's isGrounded property
 
-        if (_groundedPlayer && _velocity.y < 0) 
+        if (_groundedPlayer && _velocity.y < 0)
         {
             _velocity.y = 0f; //if the character was grounded in the last frame and is now moving in a negative velocity (falling down), set the velocity (speed and direction) to zero
         }
 
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")); //predefined axes in Unity linked to WASD controllers
         move = transform.TransformDirection(move);
-        
+
         _controller.Move(move * Time.deltaTime * Speed); //moves character in the given direction from our move vector3
 
         _isWalking = move != Vector3.zero ? true : false; //set the bool is the player is moving or not
@@ -46,10 +47,10 @@ public class CharacterControllerJump : MonoBehaviour
         _velocity.y += Gravity * Time.deltaTime; //setting velocity in the y direction to the acceleration of gravity in relation to our fps (Time.deltaTime)
         _controller.Move(_velocity * Time.deltaTime); //Movement based on velocity
 
-        if(Input.GetButton("Run") && _isWalking)
+        if (Input.GetButton("Run") && _isWalking)
         {
             _isRunning = true;
-            _controller.Move(move * Time.deltaTime * Speed * 1.15f);
+            _controller.Move(move * Time.deltaTime * Speed * _runSpeed);
         }
         else
         {
