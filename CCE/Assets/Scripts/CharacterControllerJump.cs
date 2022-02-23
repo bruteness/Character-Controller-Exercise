@@ -31,17 +31,11 @@ public class CharacterControllerJump : MonoBehaviour
         }
 
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")); //predefined axes in Unity linked to WASD controllers
+        move = transform.TransformDirection(move);
+        
         _controller.Move(move * Time.deltaTime * Speed); //moves character in the given direction from our move vector3
 
-        if (move != Vector3.zero)
-        {
-            _isWalking = true;
-            transform.forward = move; //character rotates with directional movement
-        }
-        else
-        {
-            _isWalking = false;
-        }
+        _isWalking = move != Vector3.zero ? true : false; //set the bool is the player is moving or not
         _animator.SetBool("isWalking", _isWalking);
 
         if (Input.GetButton("Jump") && _groundedPlayer) //predefined jump in unity mapped to the space bar
